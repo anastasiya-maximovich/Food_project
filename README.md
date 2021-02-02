@@ -1,6 +1,6 @@
 # Food_project
 
-## In prosessing
+## In processing
 
 
 1. Task1 - create tabs in the right corner

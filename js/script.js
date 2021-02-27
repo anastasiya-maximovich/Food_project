@@ -112,12 +112,15 @@ window.addEventListener('DOMContentLoaded', ()=>{
           btnTrigger = document.querySelectorAll('[data-model]'),
           btnClose = document.querySelector('[data-close]');
 
+    function openModal(){
+        modal.classList.add('show');
+        modal.classList.remove('hide');
+        document.body.style.overflow = 'hidden'; // добавляем стиль к body, чтобы оно не двигалось, когда открыли модальное окно
+        clearInterval();
+    }
+
    btnTrigger.forEach(btn =>{
-        btn.addEventListener('click', () =>{
-                modal.classList.add('show');
-                modal.classList.remove('hide');
-                document.body.style.overflow = 'hidden'; // добавляем стиль к body, чтобы оно не двигалось, когда открыли модальное окно
-        });
+        btn.addEventListener('click', openModal);
    });
 
    function closeModel(){
@@ -139,5 +142,17 @@ window.addEventListener('DOMContentLoaded', ()=>{
             closeModel();
         }
     });
+
+    const modalTimerId = setTimeout(openModal, 7000); // тут повесили счетчик, что через 7с на странице откроется модалка
+
+    function showModelByScroll(){
+        if(window.pageYOffset + document.documentElement.clientHeight >= // тут посчитали, что если клиент доскролил по конца страницы, открыть модалку
+        document.documentElement.scrollHeight){
+            openModal();
+            window.removeEventListener('scroll', showModelByScroll);
+        }
+    }
+
+    window.addEventListener('scroll', showModelByScroll);
 
 });

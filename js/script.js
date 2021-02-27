@@ -52,7 +52,7 @@ window.addEventListener('DOMContentLoaded', ()=>{
 
     //Timer
 
-    const deadline = '2021-02-28'; // наш дедлайн
+    const deadline = '2021-05-20'; // наш дедлайн
 
     function getTimeRemaning(endtime) {
         const t = Date.parse(endtime) - Date.parse(new Date()), /*тут мы создали переменную разница от текущего времени до дедлайна
@@ -105,5 +105,39 @@ window.addEventListener('DOMContentLoaded', ()=>{
     }
 
     setClock('.timer', deadline);
+
+    //Modal
+
+    const modal = document.querySelector('.modal'),
+          btnTrigger = document.querySelectorAll('[data-model]'),
+          btnClose = document.querySelector('[data-close]');
+
+   btnTrigger.forEach(btn =>{
+        btn.addEventListener('click', () =>{
+                modal.classList.add('show');
+                modal.classList.remove('hide');
+                document.body.style.overflow = 'hidden'; // добавляем стиль к body, чтобы оно не двигалось, когда открыли модальное окно
+        });
+   });
+
+   function closeModel(){
+        modal.classList.add('hide');
+        modal.classList.remove('show');
+        document.body.style.overflow = ''; // при закрытии, возвращаем скрол
+   }
+
+   btnClose.addEventListener('click', closeModel);
+
+    modal.addEventListener('click', (e) =>{
+        if(e.target === modal){         // здась мы говорим, что если таргет - это наш modal, т.е. НЕ окно модалки, то
+           closeModel();  // при клике в любое место так же закрывается модальное окно, а не только на крестик
+        }
+    });
+
+    document.addEventListener('keydown', (e) => { // закрытие по клавиже Esc
+        if(e.code === 'Escape' && modal.classList.contains('show')){
+            closeModel();
+        }
+    });
 
 });

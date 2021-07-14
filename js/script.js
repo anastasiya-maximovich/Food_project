@@ -52,7 +52,7 @@ window.addEventListener('DOMContentLoaded', ()=>{
 
     //Timer
 
-    const deadline = '2021-05-20'; // наш дедлайн
+    const deadline = '2021-10-20'; // наш дедлайн
 
     function getTimeRemaning(endtime) {
         const t = Date.parse(endtime) - Date.parse(new Date()), /*тут мы создали переменную разница от текущего времени до дедлайна
@@ -224,4 +224,47 @@ window.addEventListener('DOMContentLoaded', ()=>{
         21,
         ".menu .container"
     ).render();
+
+    //Forms
+    const forms  = document.querySelectorAll('form');
+
+    const message = {
+        loading: 'Загрузка',
+        success: 'Спасибо! Скоро мы с Вами связемся',
+        failure: 'Что-то пошло не так...'
+    }
+
+    forms.forEach(item => {
+        postDate(item);
+    })
+
+    function postDate (form){
+        form.addEventListener('sudmit', (e) => {
+            e.preventDefault();
+
+            const statusMessage = document.createElement('div');
+            statusMessage.classList.add('status');
+            statusMessage.textContent = message.loading;
+            form.append(statusMessage);
+
+            const request = new XMLHttpRequest();
+            request.open('POST', 'server.php');
+
+           // request.setRequestHeader('Content-type', 'multupart/form-data')
+            const formData = new FormData(form);
+
+            request.sent(formData);
+
+            request.addEventListener('load', () => {
+                console.log(request.response);
+                if (request.status === 200) {
+                   statusMessage.textContent = message.success;
+                } else {
+                    statusMessage.textContent = message.failure;
+                }
+            } )
+        });
+    }
+
+
 });
